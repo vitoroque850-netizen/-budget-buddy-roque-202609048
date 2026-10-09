@@ -10,10 +10,9 @@ input_year=st.text_input("Enter Year")
 
 if select_month != "All" and input_year:
     month_year=f"{select_month} {input_year}"
-    filter_budget_data=[row for row in budget_data if row['month']== month_year]
+    filter_budget_data=[row for row in budget_data if row["month"].strip()== month_year]
 else:
     filter_budget_data=budget_data
-st.dataframe(filter_budget_data)
 
 if filter_budget_data:
     get_source=filter_budget_data[0]["income_source"]
@@ -39,4 +38,19 @@ if add_bucket and add_button:
     })
 
 data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
-st.rerun()
+
+if filter_budget_data:
+    categories=[row["category"] for row in filter_budget_data]
+    select_categ=st.selectbox("Select Budget Bucket", categories)
+
+    specific_row= [row for row in filter_budget_data if row["category"]==select_categ][0]
+    edit_category=st.text_input("Rename Bucket", value=specific_row["category"])
+    edit_amount=st.number_input("Enter New Amount", value=specific_row["planned_amount"])
+
+    update=st.button("Update")
+    if update:
+        specific_row["category"], specific_row["planned_amount"]=edit_category, edit_amount
+        data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+
+    st.dataframe(filter_budget_data)
+
