@@ -37,7 +37,9 @@ if add_bucket and add_button:
         "planned_amount":add_amount
     })
 
-data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+    data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+
+st.dataframe(filter_budget_data)
 
 if filter_budget_data:
     categories=[row["category"] for row in filter_budget_data]
@@ -52,5 +54,12 @@ if filter_budget_data:
         specific_row["category"], specific_row["planned_amount"]=edit_category, edit_amount
         data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
 
-    st.dataframe(filter_budget_data)
+    delete=st.button("Delete")
+    if delete:
+        budget_data[:]=[row for row in budget_data if not (row["month"]==month_year 
+                                                           and row["category"]==select_categ)]
+        data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+        st.rerun()
+
+ 
 
