@@ -65,7 +65,7 @@ if filter_budget_data:
 all_planned_amount=[row["planned_amount"]for row in filter_budget_data]
 all_income=[row["income"]for row in filter_budget_data]
 total_planned_amount=sum(all_planned_amount)
-total_income=sum(all_income)
+total_income=all_income[0]
 
 st.write("Total Income: ",{total_income})
 st.write("Total Planned Amount: ",{total_planned_amount})
