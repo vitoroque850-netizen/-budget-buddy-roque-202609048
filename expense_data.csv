@@ -20,3 +20,7 @@ date,month,category,description,amount
 2027-02-19,February 2027,Transportation,Jeepney fare for the week,300.0
 2027-02-21,February 2027,Food,Weekly groceries,1350.0
 2027-02-24,February 2027,Utilities,Water bill,470.0
+{'2027'},January 2027,Toys,Anime figures,2000.0
+{'2027'},January 2027,Toys,Anime figures,2000.0
+{'2027'},January 2027,Toys,Anime figures,2000.0
+2027-01-01,January 2027,Toys,Anime figures,2000
