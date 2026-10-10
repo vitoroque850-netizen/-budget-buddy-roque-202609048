@@ -45,3 +45,11 @@ if add_button:
     })
     data_loader.save_expense_data(expense_data, filename=data_loader.EXPENSE_FILENAME)
     st.rerun()
+
+delete=st.button("Delete")
+if delete:
+    expense_data[:]=[row for row in expense_data if not (row["date"]==add_date and 
+                                                         row["month"]==month_year and
+                                                        row["category"]==add_bucket)]
+    data_loader.save_expense_data(expense_data, filename=data_loader.EXPENSE_FILENAME)
+    st.rerun()
