@@ -38,7 +38,8 @@ if add_bucket and add_button:
     })
 
     data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
-
+    st.rerun()
+    
 st.dataframe(filter_budget_data)
 
 if filter_budget_data:
@@ -60,6 +61,22 @@ if filter_budget_data:
                                                            and row["category"]==select_categ)]
         data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
         st.rerun()
+
+all_planned_amount=[row["planned_amount"]for row in filter_budget_data]
+all_income=[row["income"]for row in filter_budget_data]
+total_planned_amount=sum(all_planned_amount)
+total_income=sum(all_income)
+
+st.write("Total Income: ",{total_income})
+st.write("Total Planned Amount: ",{total_planned_amount})
+
+if total_planned_amount > total_income:
+    st.write("Planned expenses exceed income!")
+else:
+    unallocated_income=total_income-total_planned_amount
+    st.write("Unallocated Income: ",{unallocated_income})
+
+
 
  
 
