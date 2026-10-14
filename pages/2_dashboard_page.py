@@ -54,7 +54,18 @@ if filter_budget:
             categories_list.append(categories)
             amount_list.append(amounts)
 
-fig, ax =plt.subplots()
-ax.pie(amount_list, labels=categories_list, autopct="%1.1f%%")
-ax.set_title("Planned Budget Distribution")
-st.pyplot(fig)
+fig_1, ax_1 =plt.subplots()
+ax_1.pie(amount_list, labels=categories_list, autopct="%1.1f%%")
+ax_1.set_title("Planned Budget Distribution")
+st.pyplot(fig_1)
+
+fig_2, ax_2=plt.subplots(figsize=(10,7))
+compare=["Planned Expenses","Actual Expenses"]
+compare_totals=[total_planned_amount, total_actual_expenses]
+
+ax_2.set_ylabel("Amount")
+ax_2.set_title("Planned Expenses vs Actual Expenses")
+bars=ax_2.bar(compare,compare_totals, color=["#CBD5E1","#05751D"])
+
+st.pyplot(fig_2)
+
