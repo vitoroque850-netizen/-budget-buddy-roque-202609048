@@ -21,8 +21,16 @@ all_planned_amount=[row["planned_amount"]for row in filter_budget]
 all_income=[row["income"]for row in filter_budget]
 all_actual_expenses=[row["amount"]for row in filter_expense]
 
+months_list=[]
+total_income=0
+for row in filter_budget:
+    months=row["month"]
+
+    if months not in months_list:
+        months_list.append(months)
+        total_income+= float(row["income"])
+
 total_planned_amount=sum(all_planned_amount)
-total_income=all_income[0]
 total_actual_expenses=sum(all_actual_expenses)
 unallocated_income=total_income-total_actual_expenses
 
