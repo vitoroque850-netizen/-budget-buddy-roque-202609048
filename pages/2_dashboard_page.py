@@ -1,5 +1,7 @@
 import streamlit as st
 import data_loader
+import matplotlib.pyplot as plt
+import numpy as np
 
 budget_data=(data_loader.load_budget_data(filename=data_loader.BUDGET_FILENAME))
 expense_data=data_loader.load_expense_data(filename=data_loader.EXPENSE_FILENAME)
@@ -29,3 +31,22 @@ col1.metric(label="Income", value=f"${total_income:,.2f}")
 col2.metric(label="Planned Expenses", value=f"${total_planned_amount:,.2f}")
 col3.metric(label="Actual Expenses", value=f"${total_actual_expenses:,.2f}")
 col4.metric(label="Money Remaining", value=f"${unallocated_income:,.2f}")
+
+if filter_budget:
+    categories_list=[]
+    amount_list=[]
+
+    for row in filter_budget:
+        categories=row["category"]
+        amounts=float(row["planned_amount"])
+
+        if categories in categories_list:
+            amount_list[categories_list.index(categories)]+=amounts
+        else:
+            categories_list.append(categories)
+            amount_list.append(amounts)
+
+fig, ax =plt.subplots()
+ax.pie(amount_list, labels=categories_list, autopct="%1.1f%%")
+ax.set_title("Planned Budget Distribution")
+st.pyplot(fig)
