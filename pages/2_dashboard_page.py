@@ -46,13 +46,13 @@ if filter_budget:
 
     for row in filter_budget:
         categories=row["category"]
-        amounts=float(row["planned_amount"])
+        planned_amounts=float(row["planned_amount"])
 
         if categories in categories_list:
-            amount_list[categories_list.index(categories)]+=amounts
+            amount_list[categories_list.index(categories)]+=planned_amounts
         else:
             categories_list.append(categories)
-            amount_list.append(amounts)
+            amount_list.append(planned_amounts)
 
 fig_1, ax_1 =plt.subplots()
 ax_1.pie(amount_list, labels=categories_list, autopct="%1.1f%%")
@@ -69,3 +69,34 @@ bars=ax_2.bar(compare,compare_totals, color=["#CBD5E1","#05751D"])
 
 st.pyplot(fig_2)
 
+planned_by_category={}
+for row in filter_budget:
+    categories=row["category"]
+    planned_amounts=float(row["planned_amount"])
+    planned_by_category[categories]=planned_by_category.get(categories,0)+planned_amounts
+
+actual_by_category={}
+for row in filter_expense:
+    categories=row["category"]
+    actual_amounts=float(row["amount"])
+    actual_by_category[categories]=actual_by_category.get(categories,0)+actual_amounts
+
+combine_categories=list(set(list(planned_by_category.keys())+list(actual_by_category.keys())))
+
+planned_expense=planned_by_category.get(categories,0)
+actual_expense=actual_by_category.get(categories,0)
+
+for categories in combine_categories:
+    planned_expense=planned_by_category.get(categories,0)
+    actual_expense=actual_by_category.get(categories,0)
+    remaining=planned_expense-actual_expense
+
+    st.markdown(f"Category: {categories}")
+    col1, col2, col3 = st.columns(3)
+    col1.write(f"Planned Expenses: ${planned_expense:,.2f}")
+    col2.write(f"Actual Expenses: ${actual_expense:,.2f}")
+
+    if actual_expense>planned_expense:
+        col3.error(f"Over the Budget by: ${actual_expense-planned_expense:,.2f}")
+    else:
+        col3.write(f"Remaining: ${remaining:,.2f}")

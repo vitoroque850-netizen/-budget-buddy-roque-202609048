@@ -5,8 +5,11 @@ st.title("Budget Planner")
 
 budget_data=(data_loader.load_budget_data(filename=data_loader.BUDGET_FILENAME))
 
+st.header("Monthly Budget Setup")
+st.caption("Select a month and enter an income source and expected income.")
+
 select_month=st.selectbox("Select Month",["All"]+["January","February","March","April","May","June","July","August","September","October","November","December"])
-input_year=st.text_input("Enter Year")
+input_year=st.text_input("Enter Year", value="2027")
 
 if select_month != "All" and input_year:
     month_year=f"{select_month} {input_year}"
@@ -23,6 +26,9 @@ else:
 
 income_source=st.text_input("Enter Income Source:",value=get_source)
 expected_income=st.number_input("Enter Expected Income",value=get_income)
+
+st.header("Customizable Budget Categories")
+st.caption("Start with default categories and add, rename, edit, or remove budget buckets.")
 
 add_bucket=st.text_input("Add New Budget Bucket")
 add_amount=int(st.number_input("Add New Planned Amount"))
@@ -62,10 +68,21 @@ if filter_budget_data:
         data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
         st.rerun()
 
+st.header("Budget Calculations")
+st.caption("Automatically calculate total planned expenses and unallocated income.")
+
 all_planned_amount=[row["planned_amount"]for row in filter_budget_data]
 all_income=[row["income"]for row in filter_budget_data]
 total_planned_amount=sum(all_planned_amount)
-total_income=all_income[0]
+
+months_list=[]
+total_income=0
+for row in filter_budget_data:
+    months=row["month"]
+
+    if months not in months_list:
+        months_list.append(months)
+        total_income+= float(row["income"])
 
 st.write("Total Income: ",{total_income})
 st.write("Total Planned Amount: ",{total_planned_amount})

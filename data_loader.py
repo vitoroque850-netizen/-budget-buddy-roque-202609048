@@ -96,3 +96,4 @@ def add_expense(expense_entry, filename="expense_data.csv"):
         if not file_exists:
             writer.writeheader()
         writer.writerow(expense_entry)
+    
