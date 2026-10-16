@@ -45,16 +45,20 @@ with col_add:
     add_bucket=st.text_input("Add New Budget Bucket")
     add_amount=int(st.number_input("Add New Planned Amount"))
     add_button=st.button("Add")
-
-    if add_bucket and add_button:
+        
+    if add_bucket=="":
+        st.error("Fill out Add New Budget Bucket")
+    elif add_amount==0:
+        st.error("Fill out Add New Planned Amount")
+    elif add_bucket and add_amount and add_button:
         budget_data.append({
-            "month":month_year,
-            "income_source":income_source,
-            "income":expected_income,
-            "category":add_bucket,
-            "planned_amount":add_amount
-        })
-
+                "month":month_year,
+                "income_source":income_source,
+                "income":expected_income,
+                "category":add_bucket,
+                "planned_amount":add_amount
+            })
+    
         data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
         st.rerun()
     

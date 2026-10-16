@@ -96,9 +96,6 @@ for row in filter_expense:
 
 combine_categories=list(set(list(planned_by_category.keys())+list(actual_by_category.keys())))
 
-planned_expense=planned_by_category.get(categories,0)
-actual_expense=actual_by_category.get(categories,0)
-
 for categories in combine_categories:
     planned_expense=planned_by_category.get(categories,0)
     actual_expense=actual_by_category.get(categories,0)

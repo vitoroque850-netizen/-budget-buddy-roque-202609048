@@ -6,7 +6,7 @@ st.caption("Budget Buddy helps you to manage your money by keeping track of your
 st.subheader("Budget Planner")
 st.markdown("""
 **Features/Functions:**
-* Monthly Budget Setup - Allow users to select a month and enter an income source and expected income.
+* Monthly Budget Setup - Allow users to select a month and enter an income source and expected income. This also filters the data displayed for the selected month.
 * Customizable Budget Categories - Allow users to add, rename, edit, and remove budget buckets.
 * Budget Calculations - Automatically calculate total planned expenses and unallocated income.""")
 
