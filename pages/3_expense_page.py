@@ -6,6 +6,9 @@ st.title("Expense Tracker")
 expense_data=data_loader.load_expense_data(filename=data_loader.EXPENSE_FILENAME)
 st.dataframe(expense_data)
 
+st.header("Expense Recording")
+st.caption("Record the date, category, description, and amount of an expense.")
+
 select_month=st.selectbox("Select Month",["January","February","March","April","May","June","July","August","September","October","November","December"])
 input_year=st.text_input("Enter Year")
 month_year=f"{select_month} {input_year}"
