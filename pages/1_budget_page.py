@@ -34,6 +34,8 @@ with col_inc1:
 with col_inc2:
     expected_income=st.number_input("Enter Expected Income",value=get_income)
 
+
+
 st.header("Customizable Budget Categories")
 st.caption("Start with default categories and add, rename, edit, or remove budget buckets.")
 
@@ -47,8 +49,8 @@ with col_add:
     if add_bucket and add_button:
         budget_data.append({
             "month":month_year,
-            "income_source":get_source,
-            "income":get_income,
+            "income_source":income_source,
+            "income":expected_income,
             "category":add_bucket,
             "planned_amount":add_amount
         })
@@ -68,17 +70,19 @@ with col_edit:
         edit_category=st.text_input("Rename Bucket", value=specific_row["category"])
         edit_amount=st.number_input("Enter New Amount", value=specific_row["planned_amount"])
 
-        update=st.button("Update")
-        if update:
-            specific_row["category"], specific_row["planned_amount"]=edit_category, edit_amount
-            data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
-
-        delete=st.button("Delete")
-        if delete:
-            budget_data[:]=[row for row in budget_data if not (row["month"]==month_year 
-                                                               and row["category"]==select_categ)]
-            data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
-            st.rerun()
+        col_upd,col_del=st.columns(2)
+        with col_upd:
+            update=st.button("Update")
+            if update:
+                specific_row["category"], specific_row["planned_amount"]=edit_category, edit_amount
+                data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+        with col_del:
+            delete=st.button("Delete")
+            if delete:
+                budget_data[:]=[row for row in budget_data if not (row["month"]==month_year 
+                                                                   and row["category"]==select_categ)]
+                data_loader.save_budget_data(budget_data, filename=data_loader.BUDGET_FILENAME)
+                st.rerun()
 
 st.header("Budget Calculations")
 st.caption("Automatically calculate total planned expenses and unallocated income.")
@@ -97,6 +101,7 @@ for row in filter_budget_data:
         total_income+= float(row["income"])
 
 unallocated_income=total_income-total_planned_amount
+exceed_income=total_planned_amount-total_income
 
 col1,col2=st.columns(2)
 
@@ -104,7 +109,7 @@ col1.metric(label="Total Income: ",value=f"${total_income:,.2f}")
 col2.metric(label="Total Planned Expenses: ",value=f"${total_planned_amount:,.2f}")
 
 if total_planned_amount > total_income:
-    st.error(f"Planned expenses exceed income by ${unallocated_income:,.2f} !")
+    st.warning(f"Planned expenses exceed income by ${exceed_income:,.2f} !")
 else:
     st.success(f"Unallocated Income: ${unallocated_income:,.2f}")
 
