@@ -1,7 +1,7 @@
 import streamlit as st
 import data_loader
 
-st.title("Expenses Tab")
+st.title("Expense Tracker")
 
 expense_data=data_loader.load_expense_data(filename=data_loader.EXPENSE_FILENAME)
 st.dataframe(expense_data)

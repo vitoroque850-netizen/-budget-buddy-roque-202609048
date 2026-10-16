@@ -3,8 +3,13 @@ import data_loader
 import matplotlib.pyplot as plt
 import numpy as np
 
+st.title("Dashboard")
+
 budget_data=(data_loader.load_budget_data(filename=data_loader.BUDGET_FILENAME))
 expense_data=data_loader.load_expense_data(filename=data_loader.EXPENSE_FILENAME)
+
+st.header("Monthly Financial Summary")
+st.caption("Select a month and display income, planned expenses, actual expenses, and money remaining.")
 
 select_month=st.selectbox("Select Month",["All"]+["January","February","March","April","May","June","July","August","September","October","November","December"])
 input_year=st.text_input("Enter Year",value="2027")
@@ -40,6 +45,9 @@ col2.metric(label="Planned Expenses", value=f"${total_planned_amount:,.2f}")
 col3.metric(label="Actual Expenses", value=f"${total_actual_expenses:,.2f}")
 col4.metric(label="Money Remaining", value=f"${unallocated_income:,.2f}")
 
+st.header("Budget Visualization")
+st.subheader("Planned Budget Distribution by Category")
+
 if filter_budget:
     categories_list=[]
     amount_list=[]
@@ -59,6 +67,8 @@ ax_1.pie(amount_list, labels=categories_list, autopct="%1.1f%%")
 ax_1.set_title("Planned Budget Distribution")
 st.pyplot(fig_1)
 
+st.subheader("Planned and Actual Spending Comparison")
+
 fig_2, ax_2=plt.subplots(figsize=(10,7))
 compare=["Planned Expenses","Actual Expenses"]
 compare_totals=[total_planned_amount, total_actual_expenses]
@@ -68,6 +78,9 @@ ax_2.set_title("Planned Expenses vs Actual Expenses")
 bars=ax_2.bar(compare,compare_totals, color=["#CBD5E1","#05751D"])
 
 st.pyplot(fig_2)
+
+st.header("Budget Breakdown")
+st.caption("Show each category's planned amount, actual spending, and remaining/over-budget amount.")
 
 planned_by_category={}
 for row in filter_budget:
